@@ -41,12 +41,14 @@ supabase/
 - `profiles`: 인증 사용자와 1:1로 연결되는 공개 프로필 정보
 - `friendships`: 요청자, 대상, 상태(`pending`, `accepted`, `blocked`), 생성 시각
 - `friend_discovery`: 공개용 고유 아이디, 전화번호 검색 허용 설정, QR 코드에 사용할 안전한 공개 토큰. 전화번호 원문은 공개 검색용으로 노출하지 않고 별도 보호한다.
-- `conversations`: 유형(`direct`, `group`), 생성자, 표시 이름, 생성 시각
-- `conversation_members`: 대화 ID, 사용자 ID, 참여 시각, 마지막으로 읽은 메시지 시각 또는 ID
+- `conversations`: 유형(`direct`, `group`), 그룹 세부 유형(`normal`, `team`), 생성자, 표시 이름, 생성 시각. `direct`는 두 참여자 조합당 하나만 유지한다.
+- `conversation_members`: 대화 ID, 사용자 ID, 역할(`member`, `owner`, `deputy`), 참여 시각, 마지막으로 읽은 메시지 시각 또는 ID. `normal` 그룹은 모두 `member` 권한이며, `team` 그룹은 방장 `owner`와 부방장 `deputy`를 지정한다.
 - `messages`: 대화 ID, 발신자 ID, 본문, 생성 시각, 수정/삭제 상태
 - `attachments`: 메시지 ID, 비공개 저장 경로, MIME 유형, 크기
 
 중복 1:1 대화를 막는 규칙, 메시지 정렬 기준, 탈퇴·차단 시 처리 규칙은 DB 제약과 서버 측 규칙으로 일관되게 적용한다. `last_read_message_id`는 해당 대화 메시지인지 검증한다.
+
+개인채팅은 친구 관계만으로 채팅 목록에 만들지 않는다. 첫 메시지가 생성되면 개인 대화와 멤버십이 준비되어 목록에 나타나며, 이후 같은 두 사람의 대화는 재사용한다. 단체채팅은 방 생성 시 목록에 나타난다. 팀채팅의 방장/부방장이 할 수 있는 관리 작업은 제품 규칙으로 정하고 서버 측에서 권한을 검사한다.
 
 ## 접근 제어와 실시간 동작
 
