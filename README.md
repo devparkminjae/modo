@@ -15,5 +15,17 @@
 - [STRUCTURE.md](./STRUCTURE.md): 앱·데이터 구조와 확장 계획
 - [UI.md](./UI.md): 화면 및 상호작용 원칙
 - [CONNECTIONS.md](./CONNECTIONS.md): 외부 서비스 후보와 각 역할
+- [TODO.md](./TODO.md): 구현 순서와 현재 진행 상태
 
-구현을 시작하기 전에는 인증 방식, 초대 정책, 배포 환경 변수와 요금제를 확정합니다. 기술 제품의 버전은 구현 시점의 안정 버전으로 고정하고 정기적으로 갱신합니다.
+## 개발 시작
+
+```sh
+pnpm install
+pnpm web
+```
+
+네이티브 개발은 `pnpm ios` 또는 `pnpm android`로 시작합니다. Expo SDK 버전은 `apps/app/package.json`에 고정되어 있습니다.
+
+## Supabase 개발 연결
+
+앱은 `apps/app`을 Expo 프로젝트 루트로 실행합니다. Modo 개발 Supabase 프로젝트의 URL과 publishable key는 `apps/app/.env`에 둡니다. 이 파일은 Git에서 제외됩니다. 실제 서비스 키는 앱에 넣지 않습니다. DB 구조는 `supabase/migrations/`에서 관리합니다. 초기 마이그레이션은 Modo 개발 프로젝트에 적용되어 있습니다.

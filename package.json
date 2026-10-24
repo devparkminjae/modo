@@ -1,0 +1,12 @@
+{
+  "name": "modo",
+  "private": true,
+  "packageManager": "pnpm@12.5.1",
+  "scripts": {
+    "start": "pnpm --filter modo-app start",
+    "web": "pnpm --filter modo-app web",
+    "ios": "pnpm --filter modo-app ios",
+    "android": "pnpm --filter modo-app android",
+    "typecheck": "pnpm --filter modo-app exec tsc --noEmit"
+  }
+}

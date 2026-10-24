@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1586" height="992" viewBox="0 0 1586 992">
+  <defs>
+    <linearGradient id="modoGreen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#00c783"/>
+      <stop offset="1" stop-color="#00a96b"/>
+    </linearGradient>
+  </defs>
+  <g id="canvas-background"><rect width="1586" height="992" fill="#fff"/></g>
+
+  <g id="brand-lockup" font-family="Arial, sans-serif">
+    <g id="brand-mark" fill="none" stroke="url(#modoGreen)" stroke-width="13">
+      <circle cx="273" cy="490" r="32" fill="url(#modoGreen)" stroke="none"/>
+      <circle cx="326" cy="490" r="32"/>
+    </g>
+    <text id="brand-wordmark" x="393" y="515" fill="#101214" font-size="70" font-weight="700" letter-spacing="2">MODO</text>
+  </g>
+
+  <g id="phone-screen" font-family="Arial, 'Apple SD Gothic Neo', sans-serif">
+    <rect id="phone-surface" x="897" y="47" width="494" height="900" rx="16" fill="#fff" stroke="#e7e8e8" stroke-width="1.5"/>
+    <g id="friends-header" fill="#111315">
+      <text x="925" y="130" font-size="38" font-weight="700">친구</text>
+      <g id="add-friend-icon" fill="none" stroke="#17191a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="1341" cy="105" r="10"/><path d="M1325 129c1-11 8-17 16-17 5 0 9 2 12 6"/>
+        <path d="M1355 105v20m-10-10h20" stroke="#00bd7d"/>
+      </g>
+    </g>
+
+    <g id="my-profile">
+      <circle cx="962" cy="218" r="38" fill="#e7f4eb"/>
+      <text x="962" y="229" text-anchor="middle" fill="#176746" font-size="26" font-weight="700">J</text>
+      <text x="1026" y="213" fill="#151719" font-size="23" font-weight="700">지민</text>
+      <text x="1026" y="244" fill="#858b8f" font-size="18">오늘도 좋은 하루</text>
+      <path d="M1348 211l8 8-8 8" fill="none" stroke="#858b8f" stroke-width="2"/>
+      <path d="M925 279H1368" stroke="#e7e8e8"/>
+    </g>
+
+    <g id="friend-count" fill="#8b9094" font-size="18">
+      <text x="925" y="335">친구 3</text>
+    </g>
+
+    <g id="friend-seoun">
+      <circle cx="962" cy="400" r="38" fill="#e6f7f0"/><text x="962" y="410" text-anchor="middle" fill="#16835f" font-size="26" font-weight="700">S</text>
+      <text x="1026" y="395" fill="#151719" font-size="23" font-weight="700">서윤</text><text x="1026" y="426" fill="#858b8f" font-size="18">지금 도서관에 있어요</text>
+      <path d="M1348 393l8 8-8 8" fill="none" stroke="#858b8f" stroke-width="2"/><path d="M925 458H1368" stroke="#e7e8e8"/>
+    </g>
+    <g id="friend-minjae">
+      <circle cx="962" cy="515" r="38" fill="#e8f4fc"/><text x="962" y="525" text-anchor="middle" fill="#176a91" font-size="26" font-weight="700">M</text>
+      <text x="1026" y="510" fill="#151719" font-size="23" font-weight="700">민재</text><text x="1026" y="541" fill="#858b8f" font-size="18">주말에 봐요!</text>
+      <path d="M1348 508l8 8-8 8" fill="none" stroke="#858b8f" stroke-width="2"/><path d="M925 573H1368" stroke="#e7e8e8"/>
+    </g>
+    <g id="friend-jiwoo">
+      <circle cx="962" cy="630" r="38" fill="#fff0ed"/><text x="962" y="640" text-anchor="middle" fill="#934739" font-size="26" font-weight="700">J</text>
+      <text x="1026" y="625" fill="#151719" font-size="23" font-weight="700">지우</text><text x="1026" y="656" fill="#858b8f" font-size="18">맛있는 거 먹고 싶다</text>
+      <path d="M1348 623l8 8-8 8" fill="none" stroke="#858b8f" stroke-width="2"/>
+    </g>
+
+    <g id="bottom-navigation" font-size="16" text-anchor="middle">
+      <path d="M898 849H1390" stroke="#e7e8e8"/>
+      <g id="nav-friends" fill="#00bf7d" stroke="#00bf7d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="981" cy="880" r="9" fill="none"/><path d="M965 910c1-12 7-18 16-18s15 6 16 18z" fill="none"/>
+        <text x="981" y="925" stroke="none" font-size="16" font-weight="700">친구</text>
+      </g>
+      <g id="nav-chats" fill="none" stroke="#858b8f" stroke-width="2.5" stroke-linejoin="round">
+        <path d="M1128 867c-8 0-14 6-14 14s6 14 14 14h4l9 7v-8c4-3 6-7 6-13 0-8-7-14-19-14z"/>
+        <text x="1133" y="925" fill="#858b8f" stroke="none" font-size="16">채팅</text>
+      </g>
+      <g id="nav-settings" fill="none" stroke="#858b8f" stroke-width="2.5" stroke-linejoin="round">
+        <path d="M1300 871l5-4 6 3 1 6 5 3v7l-5 3-1 6-6 3-5-4-6 1-4-5 2-6-2-6 4-5z"/>
+        <circle cx="1303" cy="883" r="5"/>
+        <text x="1305" y="925" fill="#858b8f" stroke="none" font-size="16">설정</text>
+      </g>
+    </g>
+  </g>
+</svg>

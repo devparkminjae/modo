@@ -20,12 +20,15 @@
 ## 비밀 값 관리
 
 - 저장소에는 `.env.example`의 변수 이름과 설명만 둔다.
+- 앱에는 `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY`만 설정한다. Supabase의 publishable key는 클라이언트 공개용이며, 데이터 접근은 RLS로 제한한다.
 - 비밀 키, DB 비밀번호, 서비스 역할 키, 토큰은 브라우저 번들·문서·로그·커밋에 넣지 않는다.
 - 키가 노출되면 즉시 폐기하고 교체한다.
 - 각 호스트의 미리보기 환경과 운영 환경에 서로 다른 키를 설정한다.
 
 ## 결정 기록
 
-- 실제 프로젝트 ID, 계정, 리전, 요금제는 아직 정해지지 않았다.
-- Supabase는 인증·DB·실시간 기능, Expo/EAS는 크로스 플랫폼 앱 개발·빌드, Render는 웹/API 배포에 사용한다. 실제 플랜과 설정은 구현 시 확정한다.
+- Supabase 개발 프로젝트: `modo` 조직의 `modo alpha v0.0.1` (프로젝트 ref: `gpfzdokcokzgllqiobak`, Seoul 화면 선택 후 생성 결과는 Mumbai 리전으로 표시됨, Free/nano).
+- Supabase 프로젝트는 GitHub `devparkminjae/modo`와 연결되어 있다. 앱의 URL과 publishable key는 무시 규칙이 적용된 `apps/app/.env`에 설정한다.
+- 초기 DB 마이그레이션은 `supabase/migrations/202610220001_initial_schema.sql`이며, 해당 프로젝트에 적용했다.
+- Supabase는 인증·DB·실시간 기능, Expo/EAS는 크로스 플랫폼 앱 개발·빌드, Render는 웹/API 배포에 사용한다. 운영 플랜과 설정은 출시 전 확정한다.
 - 서비스별 최신 제한과 가격은 변할 수 있으므로 연결 시점의 공식 페이지에서 확인한다.
