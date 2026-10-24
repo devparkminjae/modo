@@ -3,7 +3,6 @@ services:
     name: modo
     runtime: node
     plan: free
-    rootDir: apps/app
-    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm build:web
-    startCommand: pnpm start
+    buildCommand: pnpm install --frozen-lockfile && pnpm --filter modo-app build:web
+    startCommand: pnpm --filter modo-app start
     healthCheckPath: /
