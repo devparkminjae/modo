@@ -1,10 +1,11 @@
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
+import { useEffect } from 'react';
 import { Platform, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
-import { Redirect } from 'expo-router';
+import { router } from 'expo-router';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -31,7 +32,9 @@ function RootLayoutNav() {
   const frameWidth = 390 * frameScale;
   const frameHeight = 844 * frameScale;
 
-  if (!loading && !user) return <Redirect href="/auth" />;
+  useEffect(() => {
+    if (!loading && !user) router.replace('/auth');
+  }, [loading, user]);
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <View style={[styles.root, phonePreview && styles.phonePreviewRoot, desktop && styles.desktopRoot, { minHeight: height }]}>
