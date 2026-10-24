@@ -22,9 +22,16 @@ export default function AuthScreen() {
         const { error } = await supabase.auth.verifyOtp({ phone, token: code, type: 'sms' }); if (error) throw error; router.replace('/(tabs)'); return;
       }
       if (mode === 'login') { const { error } = await supabase.auth.signInWithPassword({ email, password }); if (error) throw error; router.replace('/(tabs)'); return; }
-      const { data, error } = await supabase.auth.signUp({ email, password, phone, options: { data: { username: username.toLowerCase(), display_name: name } } });
+      const alphaSkipPhone = process.env.EXPO_PUBLIC_ALPHA_SKIP_PHONE_OTP === 'true';
+      const { data, error } = await supabase.auth.signUp({ email, password, ...(alphaSkipPhone ? {} : { phone }), options: { data: { username: username.toLowerCase(), display_name: name } } });
       if (error) throw error;
       if (!data.user) throw new Error('계정을 만들지 못했습니다.');
+      if (alphaSkipPhone && data.session) {
+        const { error: pe } = await supabase.from('profiles').upsert({ id: data.user.id, username: username.toLowerCase(), display_name: name });
+        if (pe) throw pe;
+        router.replace('/(tabs)'); return;
+      }
+      if (alphaSkipPhone && !data.session) throw new Error('Supabase 이메일 확인 설정이 켜져 있어 가입을 완료하지 못했습니다. 이메일 확인을 끄거나 확인 후 로그인해 주세요.');
       if (data.session) { const { error: pe } = await supabase.from('profiles').upsert({ id: data.user.id, username: username.toLowerCase(), display_name: name }); if (pe) throw pe; }
       setMode('verify'); Alert.alert('인증 코드 전송', '문자로 받은 인증 코드를 입력해 주세요.');
     } catch (e) { Alert.alert('계정 처리 실패', e instanceof Error ? e.message : '다시 시도해 주세요.'); }
