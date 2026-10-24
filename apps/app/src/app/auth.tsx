@@ -11,7 +11,16 @@ export default function AuthScreen() {
     if (!supabase) return Alert.alert('연결 설정 필요', '앱 환경 변수에 Supabase 설정을 입력해 주세요.');
     setBusy(true);
     try {
-      if (mode === 'verify') { const { error } = await supabase.auth.verifyOtp({ phone, token: code, type: 'sms' }); if (error) throw error; router.replace('/(tabs)'); return; }
+      if (mode === 'verify') {
+        if (process.env.EXPO_PUBLIC_ALPHA_SKIP_PHONE_OTP === 'true') {
+          const { data: { user } } = await supabase.auth.getUser();
+          if (!user || !username) throw new Error('가입한 세션을 확인하지 못했습니다. 다시 가입해 주세요.');
+          const { error } = await supabase.from('profiles').upsert({ id:user.id, username:username.toLowerCase(), display_name:name || 'Modo 사용자' });
+          if (error) throw error;
+          router.replace('/(tabs)'); return;
+        }
+        const { error } = await supabase.auth.verifyOtp({ phone, token: code, type: 'sms' }); if (error) throw error; router.replace('/(tabs)'); return;
+      }
       if (mode === 'login') { const { error } = await supabase.auth.signInWithPassword({ email, password }); if (error) throw error; router.replace('/(tabs)'); return; }
       const { data, error } = await supabase.auth.signUp({ email, password, phone, options: { data: { username: username.toLowerCase(), display_name: name } } });
       if (error) throw error;
@@ -23,8 +32,8 @@ export default function AuthScreen() {
   };
   return <KeyboardAvoidingView style={s.fill} behavior={Platform.OS==='ios'?'padding':undefined}><ScrollView contentContainerStyle={s.wrap} keyboardShouldPersistTaps="handled"><Text style={s.brand}>modo</Text><Text style={s.title}>{mode==='verify'?'전화번호 인증':mode==='signup'?'모도 시작하기':'다시 만나요'}</Text>
     {mode==='signup'&&<><Field label="이름" value={name} set={setName}/><Field label="사용자 아이디" value={username} set={setUsername}/><Field label="전화번호 (+821012345678)" value={phone} set={setPhone}/></>}
-    {mode==='verify'?<Field label="인증 코드" value={code} set={setCode}/>:<><Field label="이메일" value={email} set={setEmail} keyboard="email-address"/><Field label="비밀번호" value={password} set={setPassword} secure/></>}
-    <Pressable disabled={busy} style={s.button} onPress={act}><Text style={s.buttonText}>{busy?'처리 중…':mode==='verify'?'인증하고 계속':'계속'}</Text></Pressable>
+    {mode==='verify'?<>{process.env.EXPO_PUBLIC_ALPHA_SKIP_PHONE_OTP === 'true' ? <Text style={s.note}>알파 테스트: SMS 없이 계속합니다. 전화번호 소유 인증은 수행되지 않습니다.</Text> : <Field label="인증 코드" value={code} set={setCode}/>}</>:<><Field label="이메일" value={email} set={setEmail} keyboard="email-address"/><Field label="비밀번호" value={password} set={setPassword} secure/></>}
+    <Pressable disabled={busy} style={s.button} onPress={act}><Text style={s.buttonText}>{busy?'처리 중…':mode==='verify'?(process.env.EXPO_PUBLIC_ALPHA_SKIP_PHONE_OTP === 'true'?'알파 테스트 계속':'인증하고 계속'):'계속'}</Text></Pressable>
     {mode!=='verify'&&<Pressable onPress={()=>setMode(mode==='login'?'signup':'login')}><Text style={s.switch}>{mode==='login'?'계정이 없으신가요? 가입하기':'이미 계정이 있으신가요? 로그인'}</Text></Pressable>}
     {mode==='signup'&&<Text style={s.note}>가입 후 전화번호 인증이 필요합니다. SMS 인증은 Supabase의 SMS 제공자 설정에 따라 동작합니다.</Text>}</ScrollView></KeyboardAvoidingView>;
 }

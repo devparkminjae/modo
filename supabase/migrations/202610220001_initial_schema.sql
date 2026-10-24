@@ -113,7 +113,7 @@ begin
     raise exception 'Message must contain 1 to 4000 characters';
   end if;
   select u.phone_confirmed_at into phone_confirmed from auth.users u where u.id = current_user_id;
-  if phone_confirmed is null then raise exception 'Phone verification is required'; end if;
+  if phone_confirmed is null and current_setting('app.alpha_skip_phone_otp', true) is distinct from 'true' then raise exception 'Phone verification is required'; end if;
   if not exists (select 1 from public.profiles p where p.id = current_user_id) then
     raise exception 'Complete your profile before messaging';
   end if;
