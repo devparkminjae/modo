@@ -24,12 +24,18 @@ export default function AuthScreen() {
       }
       if (mode === 'login') { const identifier=email.trim(); const credentials=identifier.startsWith('+')?{phone:identifier,password}:{email:identifier,password}; const { error } = await supabase.auth.signInWithPassword(credentials); if (error) throw error; router.replace('/(tabs)'); return; }
       const alphaSkipPhone = process.env.EXPO_PUBLIC_ALPHA_SKIP_PHONE_OTP === 'true';
-      const { data, error } = await supabase.auth.signUp({ email, password, ...(alphaSkipPhone ? {} : { phone }), options: { data: { username: username.toLowerCase(), display_name: name } } });
+      const rawPhone = phone.trim().replace(/[\s()-]/g, '');
+      const phoneNumber = rawPhone.startsWith('+') ? rawPhone : rawPhone.startsWith('0') ? `+82${rawPhone.slice(1)}` : `+${rawPhone}`;
+      if (!/^[+]?[1-9][0-9]{7,14}$/.test(phoneNumber)) throw new Error('전화번호를 국제 형식으로 입력해 주세요. 예: +821012345678');
+      if (!email.trim() || password.length < 8 || !name.trim() || !/^[a-z0-9_]{3,20}$/i.test(username)) throw new Error('이름, 아이디(3~20자), 이메일, 비밀번호(8자 이상)를 확인해 주세요.');
+      const { data, error } = await supabase.auth.signUp({ email, password, ...(alphaSkipPhone ? {} : { phone: phoneNumber }), options: { data: { username: username.toLowerCase(), display_name: name.trim(), phone_e164: phoneNumber, ...(alphaSkipPhone?{modo_alpha_phone_skip:true}:{}) } } });
       if (error) throw error;
       if (!data.user) throw new Error('계정을 만들지 못했습니다.');
       if (alphaSkipPhone && data.session) {
         const { error: pe } = await supabase.from('profiles').upsert({ id: data.user.id, username: username.toLowerCase(), display_name: name });
         if (pe) throw pe;
+        const { error: phoneError } = await supabase.from('profile_phone_lookup').upsert({ user_id: data.user.id, phone_e164: phoneNumber });
+        if (phoneError) throw phoneError;
         router.replace('/(tabs)'); return;
       }
       if (alphaSkipPhone && !data.session) throw new Error('Supabase 이메일 확인 설정이 켜져 있어 가입을 완료하지 못했습니다. 이메일 확인을 끄거나 확인 후 로그인해 주세요.');
