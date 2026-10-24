@@ -32,7 +32,6 @@ function RootLayoutNav() {
   const frameHeight = 844 * frameScale;
 
   if (!loading && !user) return <Redirect href="/auth" />;
-  if (loading) return <View style={{ flex: 1, backgroundColor: '#fff' }} />;
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <View style={[styles.root, phonePreview && styles.phonePreviewRoot, desktop && styles.desktopRoot, { minHeight: height }]}>
